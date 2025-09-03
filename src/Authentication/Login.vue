@@ -1,0 +1,85 @@
+<template>
+  <div class="flex items-center justify-center min-h-screen bg-gray-900">
+    <div class="w-full max-w-md bg-gray-800 p-8 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold text-center text-white mb-6">Login</h2>
+
+      <form @submit.prevent="handleLogin" class="space-y-4">
+        <!-- Email -->
+        <div>
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <p class="text-red-500 text-sm mt-1" v-if="errors.email">{{ errors.email }}</p>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <p class="text-red-500 text-sm mt-1" v-if="errors.password">{{ errors.password }}</p>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition"
+        >
+          Login
+        </button>
+      </form>
+
+      <p class="text-gray-400 text-sm mt-4 text-center">
+        Don’t have an account?
+        <router-link to="/" class="text-indigo-400 hover:underline">Register</router-link>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { supabase } from "../supabase";
+
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+const errors = ref({ email: "", password: "" });
+
+const handleLogin = async () => {
+  // reset errors
+  errors.value = { email: "", password: "" };
+
+  // basic validations
+  if (!email.value) errors.value.email = "Email is required";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) errors.value.email = "Invalid email format";
+
+  if (!password.value) errors.value.password = "Password is required";
+
+  if (errors.value.email || errors.value.password) return;
+
+  // attempt login with Supabase
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.value,
+    password: password.value,
+  });
+
+  if (error) {
+    errors.value.password = error.message; // show Supabase error under password field
+    return;
+  }
+
+  if (data.session) {
+    const token = data.session.access_token;
+    localStorage.setItem("jwt", token); // ✅ Save JWT
+    router.push("/home");
+  }
+};
+</script>
