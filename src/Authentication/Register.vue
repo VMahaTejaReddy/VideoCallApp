@@ -40,7 +40,7 @@
         <!-- Submit -->
         <button
           type="submit"
-          class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition"
+          class="w-full py-3 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-semibold transition"
         >
           Register
         </button>
@@ -48,7 +48,7 @@
 
       <p class="text-gray-400 text-sm mt-4 text-center">
         Already have an account?
-        <router-link to="/login" class="text-indigo-400 hover:underline">Login</router-link>
+        <router-link to="/login" class="text-sky-400 hover:underline">Login</router-link>
       </p>
     </div>
   </div>

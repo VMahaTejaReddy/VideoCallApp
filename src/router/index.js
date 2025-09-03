@@ -3,11 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import Register from "@/Authentication/Register.vue";
 import Login from "@/Authentication/Login.vue";
 import Home from "@/views/Home.vue";
+import Landing from "@/views/Landing.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", name: "Register", component: Register },
+    { path: "/", name: "Landing", component: Landing },
+    { path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login },
     { path: "/home", name: "Home", component: Home, meta: { requiresAuth: true } }
   ]

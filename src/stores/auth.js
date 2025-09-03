@@ -30,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // Login
     async login({ email, password }) {
       this.loading = true
       this.error = null
@@ -44,6 +45,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // Logout
     async logout() {
       await supabase.auth.signOut()
       this.user = null

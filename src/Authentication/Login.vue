@@ -29,7 +29,7 @@
         <!-- Submit -->
         <button
           type="submit"
-          class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition"
+          class="w-full py-3 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-semibold transition"
         >
           Login
         </button>
@@ -37,7 +37,7 @@
 
       <p class="text-gray-400 text-sm mt-4 text-center">
         Don’t have an account?
-        <router-link to="/" class="text-indigo-400 hover:underline">Register</router-link>
+        <router-link to="/register" class="text-sky-400 hover:underline">Register</router-link>
       </p>
     </div>
   </div>
@@ -52,6 +52,8 @@ const router = useRouter();
 const email = ref("");
 const password = ref("");
 const errors = ref({ email: "", password: "" });
+
+localStorage.removeItem("jwt"); // Clear any existing JWT on login page load
 
 const handleLogin = async () => {
   // reset errors

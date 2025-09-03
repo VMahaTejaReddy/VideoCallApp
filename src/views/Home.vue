@@ -2,13 +2,13 @@
   <div class="min-h-screen bg-gray-900 text-white">
     <!-- Navbar -->
     <nav class="flex justify-between items-center px-8 py-4 bg-gray-800 shadow-lg">
-      <h1 class="text-xl font-bold">VideoCallApp</h1>
+      <h1 class="text-3xl text-sky-400 font-bold">VideoConnect</h1>
       <div class="flex items-center space-x-4">
         <!-- Profile Icon -->
         <div class="relative">
           <button
             @click="toggleProfile"
-            class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-lg"
+            class="w-10 h-10 rounded-full bg-sky-600 flex items-center justify-center font-bold text-lg"
           >
             {{ username ? username.charAt(0).toUpperCase() : "?" }}
           </button>
@@ -18,7 +18,7 @@
             v-if="showProfile"
             class="absolute right-0 mt-2 w-48 bg-gray-700 rounded-xl shadow-lg p-4 text-left z-50"
           >
-            <p class="font-semibold text-white"><strong>Username: </strong>{{ username }}</p>
+            <p class="font-semibold text-sm"><strong>Username: </strong>{{ username }}</p>
             <p class="text-gray-300 text-sm"><strong>Email: </strong>{{ email }}</p>
           </div>
         </div>
