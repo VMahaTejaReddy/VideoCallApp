@@ -15,7 +15,7 @@ const router = createRouter({
   ]
 });
 
-// 🔒 Protect routes
+// Protect routes
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("jwt");
   if (to.meta.requiresAuth && !token) {

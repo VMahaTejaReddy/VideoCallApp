@@ -2,9 +2,9 @@
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col">
     <!-- Navbar -->
     <nav class="flex justify-between items-center px-10 py-6 backdrop-blur-lg bg-white/5 sticky top-0 z-50 border-b border-white/10">
-      <h1 class="text-2xl font-extrabold tracking-wide text-sky-400">VideoConnect</h1>
+      <h1 class="text-2xl font-extrabold tracking-wide text-sky-400">VirtualConnect</h1>
 
-      <router-link :to="{name:'Register'}" class="bg-sky-500 hover:bg-sky-600 px-5 py-2 rounded-xl font-semibold shadow-lg transition">
+      <router-link :to="{name:'Login'}" class="bg-sky-500 hover:bg-sky-600 px-5 py-2 rounded-xl font-semibold shadow-lg transition">
         Sign In
       </router-link>
     </nav>

@@ -7,7 +7,7 @@ const supabaseAnonKey =
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   realtime: {
     params: {
-      eventsPerSecond: 10, // helps handle presence updates smoothly
+      eventsPerSecond: 10, 
     },
   },
 });

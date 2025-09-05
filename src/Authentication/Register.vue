@@ -67,27 +67,27 @@ const password = ref("");
 const errors = ref({ username: "", email: "", password: "" });
 
 const handleRegister = async () => {
-  // reset errors
+  
   errors.value = { username: "", email: "", password: "" };
 
-  // basic validations
+  
   if (!username.value) errors.value.username = "Username is required";
   if (!email.value) errors.value.email = "Email is required";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) errors.value.email = "Invalid email format";
   if (!password.value) errors.value.password = "Password is required";
   else if (password.value.length < 6) errors.value.password = "Password must be at least 6 characters";
 
-  // stop if errors exist
+  
   if (errors.value.username || errors.value.email || errors.value.password) return;
 
-  // register with Supabase
+  
   const { data, error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
   });
 
   if (error) {
-    errors.value.email = error.message; // show supabase error under email field
+    errors.value.email = error.message; 
     return;
   }
 

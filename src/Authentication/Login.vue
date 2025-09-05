@@ -53,13 +53,13 @@ const email = ref("");
 const password = ref("");
 const errors = ref({ email: "", password: "" });
 
-localStorage.removeItem("jwt"); // Clear any existing JWT on login page load
+localStorage.removeItem("jwt"); 
 
 const handleLogin = async () => {
-  // reset errors
+  
   errors.value = { email: "", password: "" };
 
-  // basic validations
+  
   if (!email.value) errors.value.email = "Email is required";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) errors.value.email = "Invalid email format";
 
@@ -67,20 +67,20 @@ const handleLogin = async () => {
 
   if (errors.value.email || errors.value.password) return;
 
-  // attempt login with Supabase
+  // attempt login
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
 
   if (error) {
-    errors.value.password = error.message; // show Supabase error under password field
+    errors.value.password = error.message; 
     return;
   }
 
   if (data.session) {
     const token = data.session.access_token;
-    localStorage.setItem("jwt", token); // ✅ Save JWT
+    localStorage.setItem("jwt", token);
     router.push("/home");
   }
 };

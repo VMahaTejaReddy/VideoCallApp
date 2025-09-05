@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-900 text-white">
     <!-- Navbar -->
     <nav class="flex justify-between items-center px-8 py-4 bg-gray-800 shadow-lg">
-      <h1 class="text-3xl text-sky-400 font-bold">VideoConnect</h1>
+      <h1 class="text-3xl text-sky-400 font-bold">VirtualConnect</h1>
       <div class="flex items-center space-x-4">
         <!-- Profile Icon -->
         <div class="relative">
@@ -60,7 +60,7 @@
 
     <!-- Friends List -->
     <div class="p-6 max-w-lg mx-auto">
-      <h3 class="font-semibold text-lg mb-3">Your Friends</h3>
+      <h3 class="font-semibold text-lg mb-3">Your Friends 👥</h3>
       <div v-if="friends.length" class="bg-gray-800 p-4 rounded-lg">
         <ul class="space-y-2">
           <li v-for="friend in friends" :key="friend.id" class="flex justify-between items-center">
@@ -72,6 +72,8 @@
               </span>
             </div>
             <button class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded">📞 Call</button>
+             
+
           </li>
         </ul>
       </div>
@@ -109,7 +111,7 @@ const logout = async () => {
 
   await supabase.auth.signOut();
   localStorage.removeItem("jwt");
-  router.push("/login");
+  router.push("/");
 };
 
 // search users
@@ -205,10 +207,9 @@ onMounted(async () => {
     username.value = profile.username;
   }
 
-  // set current user online
   await supabase.from("profiles").update({ is_online: true }).eq("id", user.id);
 
-  // mark offline on window close
+  
   window.addEventListener("beforeunload", async () => {
     await supabase
       .from("profiles")
@@ -218,7 +219,7 @@ onMounted(async () => {
 
   await fetchFriends();
 
-  // subscribe to status changes
+
   supabase
     .channel("online-status")
     .on(
