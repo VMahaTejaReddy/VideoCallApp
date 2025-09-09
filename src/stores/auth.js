@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     loading: false,
-    error: null
+    error: null,
   }),
   actions: {
     async register({ email, password, username }) {
@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
         if (profileError) throw profileError
 
         this.user = data.user
+
       } catch (err) {
         this.error = err.message
       } finally {
@@ -30,7 +31,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // Login
     async login({ email, password }) {
       this.loading = true
       this.error = null
@@ -38,17 +38,20 @@ export const useAuthStore = defineStore('auth', {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
         this.user = data.user
+        if (data.session) {
+          localStorage.setItem('jwt', data.session.access_token)
+        }
       } catch (err) {
         this.error = err.message
-      } finally {
+      } finally {5
         this.loading = false
       }
     },
 
-    // Logout
     async logout() {
       await supabase.auth.signOut()
       this.user = null
-    }
-  }
+      localStorage.removeItem('jwt')
+    },
+  },
 })

@@ -30,10 +30,13 @@
         <button
           type="submit"
           class="w-full py-3 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-semibold transition"
+          :disabled="auth.loading"
         >
-          Login
+          {{ auth.loading ? "Logging in..." : "Login" }}
         </button>
       </form>
+
+      <p class="text-red-500 text-sm mt-2 text-center" v-if="auth.error">{{ auth.error }}</p>
 
       <p class="text-gray-400 text-sm mt-4 text-center">
         Don’t have an account?
@@ -46,9 +49,11 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { supabase } from "../supabase";
+import { useAuthStore } from "@/stores/auth"; 
 
 const router = useRouter();
+const auth = useAuthStore();
+
 const email = ref("");
 const password = ref("");
 const errors = ref({ email: "", password: "" });
@@ -56,31 +61,19 @@ const errors = ref({ email: "", password: "" });
 localStorage.removeItem("jwt"); 
 
 const handleLogin = async () => {
-  
   errors.value = { email: "", password: "" };
 
-  
+  // validation
   if (!email.value) errors.value.email = "Email is required";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) errors.value.email = "Invalid email format";
-
   if (!password.value) errors.value.password = "Password is required";
 
   if (errors.value.email || errors.value.password) return;
 
-  // attempt login
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  });
+  // use store action
+  await auth.login({ email: email.value, password: password.value });
 
-  if (error) {
-    errors.value.password = error.message; 
-    return;
-  }
-
-  if (data.session) {
-    const token = data.session.access_token;
-    localStorage.setItem("jwt", token);
+  if (!auth.error && auth.user) {
     router.push("/home");
   }
 };

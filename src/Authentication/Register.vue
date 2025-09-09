@@ -41,10 +41,13 @@
         <button
           type="submit"
           class="w-full py-3 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-semibold transition"
+          :disabled="auth.loading"
         >
-          Register
+          {{ auth.loading ? 'Registering...' : 'Register' }}
         </button>
       </form>
+
+      <p class="text-red-500 text-sm mt-2 text-center" v-if="auth.error">{{ auth.error }}</p>
 
       <p class="text-gray-400 text-sm mt-4 text-center">
         Already have an account?
@@ -57,9 +60,10 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { supabase } from "../supabase";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const auth = useAuthStore();
 
 const username = ref("");
 const email = ref("");
@@ -67,41 +71,22 @@ const password = ref("");
 const errors = ref({ username: "", email: "", password: "" });
 
 const handleRegister = async () => {
-  
+  // reset errors
   errors.value = { username: "", email: "", password: "" };
 
-  
+  // local validation
   if (!username.value) errors.value.username = "Username is required";
   if (!email.value) errors.value.email = "Email is required";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) errors.value.email = "Invalid email format";
   if (!password.value) errors.value.password = "Password is required";
   else if (password.value.length < 6) errors.value.password = "Password must be at least 6 characters";
 
-  
   if (errors.value.username || errors.value.email || errors.value.password) return;
 
-  
-  const { data, error } = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value,
-  });
+  await auth.register({ email: email.value, password: password.value, username: username.value });
 
-  if (error) {
-    errors.value.email = error.message; 
-    return;
-  }
-
-  if (data.user) {
-    await supabase.from("profiles").insert({
-      id: data.user.id,
-      username: username.value,
-    });
-
-    if (data.session) {
-      const token = data.session.access_token;
-      localStorage.setItem("jwt", token);
-      router.push("/home");
-    }
+  if (!auth.error && auth.user) {
+    router.push("/home");
   }
 };
 </script>
