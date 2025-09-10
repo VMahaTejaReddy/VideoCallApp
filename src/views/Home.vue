@@ -71,8 +71,9 @@
                 Last seen: {{ friend.last_seen ? new Date(friend.last_seen).toLocaleTimeString() : "N/A" }}
               </span>
             </div>
-            <button class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded">📞 Call</button>
-             
+            <!-- <button class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded">📞 Call</button> -->
+             <button @click="startCall(friend.id)" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded">📞 Call</button>
+
 
           </li>
         </ul>
@@ -101,6 +102,12 @@ const currentUserId = ref("");
 const toggleProfile = () => {
   showProfile.value = !showProfile.value;
 };
+
+// Start Call
+const startCall = (friendId) => {
+  router.push(`/call/${friendId}`);
+};
+
 
 // logout
 const logout = async () => {
